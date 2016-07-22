@@ -1,45 +1,169 @@
 <!DOCTYPE html>
-<html ng-app="wsscat">
-	<head>
-		<meta charset="UTF-8">
-		<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-		<title></title>
-		<link rel="stylesheet" href="dist/css/base.css" />
-		<script type="text/javascript" src="dist/js/angular.js"></script>
-		<script type="text/javascript" src="dist/js/angular-route.js"></script>
-	</head>
-	<body>
-		<div ng-view="">
-			
-		</div>
-	</body>
-	<script type="text/javascript">
-		var app = angular.module('wsscat',['ngRoute']);
-		app.config(function($routeProvider){
-			$routeProvider.when('/index',{
-				controller:'indexCtrl',
-				templateUrl:'view/index.html'
-			}).when('/video',{
-				controller:'videoCtrl',
-				templateUrl:'view/video.html'
-			})
-			.otherwise({
-				redirectTo:'/index'
-			})
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.datalist{border:1px solid #ccc;border-collapse:collapse;width:100%;}
+		.datalist thead tr{background-color:#dfdfdf;}
+		td,th{border:1px solid #ccc;padding:5px 10px;}
+		.odd{background-color:#efefef;}
+		.selected{background-color: #fc0;color:#fff;}
+	</style>
+	<script src="../../jquery-1.12.0.js"></script>
+	<script>
+		$(function(){
+			var name = ['王育崇','周广','陈国荣','胡旭东','陈仁中','古志忠','秦立鑫','廖志勇','田雷','许隋立','郭锡辉','王锐','温智文','吕英华','徐蔚铭','李焯威','陈震','郭梦颖','张龙','尹国君','周志抄','陈家宇','熊丽平','杨冰','周桂浩','梁启鹏','吴超亮','郑永椒','张博文','张浩','夏龙旭','夏粤琳','陈锦',
+			'唐增祥','李辉','彭涛','邓东彩','姜浩','杨小明','熊犇','赖金荣','熊江林','程小权','李世华','林煌','王彦翔','张卓','饶家麒','谢进荣','张彩霞'];
+
+			// 生成表格
+			var _html = '';
+			for(var i=0;i<name.length;i++){
+				if(i%5 == 0) _html += '<tr>';
+				_html += '<td>' + name[i] + '</td>';
+				if(i%5 == 4) _html += '</tr>';
+			}
+			$('.datalist tbody').html(_html);
+
+			// 表格隔行换色
+			$('.datalist tbody tr:odd').addClass('odd');
+
+			// 选取第一行
+			$('button').first().click(function(){
+				$('.datalist tbody tr').first().addClass('selected');
+			});
+
+			// 最后1行
+			$('button').eq(1).click(function(){
+				$('.datalist tbody tr').last().addClass('selected');
+			});
+
+			// 前3行
+			$('button').eq(2).click(function(){
+				$('.datalist tbody tr:lt(3)').addClass('selected');
+			});
+
+			// 后3行
+			$('button').eq(3).click(function(){
+				$('.datalist tbody tr:gt(-4)').addClass('selected');
+			});
+
+			// 第4-6行
+			$('button').eq(4).click(function(){
+				$('.datalist tbody tr').slice(3,6).addClass('selected');
+			});
+
+			// 第8行
+			$('button').eq(5).click(function(){
+				$('.datalist tbody tr').eq(7).addClass('selected');
+			});
+
+
+			// 输入选取单元格
+			// 原生js获取下一个元素：input.nextElementSibling
+			// 原生js获取上一个元素：input.previousElementSibling
+			var $username = $('#username');
+			var $btnSearch = $username.next();
+
+			// 绑定点击事件
+			$btnSearch.click(function(){
+				var _username = $username.val();
+				$('.datalist tbody td').removeClass('selected');
+				$('.datalist tbody td:contains('+_username+')').addClass('selected');
+			});
 		});
-		app.controller('indexCtrl',['$scope','$http',function($scope,$http){
-			$http.get('xinwen.php').success(function(data){
-				
-				console.log(data.newslist);
-				$scope.news = data.newslist;
-				
-			});
-		}]);
-		app.controller('videoCtrl',['$scope','$http',function($scope,$http){
-			$http.get('video.php').success(function(videoData){
-				console.log(videoData);
-				$scope.videos = videoData.newslist;
-			});
-		}]);
 	</script>
+</head>
+<body>
+	<button>第1行</button>
+	<button>最后1行</button>
+	<button>前3行</button>
+	<button>后3行</button>
+	<button>第4-6行</button>
+	<button>第8行</button>
+	<input type="text" id="username"><button>查找</button>
+	<table class="datalist">
+		<thead>
+			<tr>
+				<th>表头1</th>
+				<th>表头2</th>
+				<th>表头3</th>
+				<th>表头4</th>
+				<th>表头5</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>单元格1</td>
+				<td>单元格2</td>
+				<td>单元格3</td>
+				<td>单元格4</td>
+				<td>单元格5</td>
+			</tr>
+			<tr>
+				<td>单元格1</td>
+				<td>单元格2</td>
+				<td>单元格3</td>
+				<td>单元格4</td>
+				<td>单元格5</td>
+			</tr>
+			<tr>
+				<td>单元格1</td>
+				<td>单元格2</td>
+				<td>单元格3</td>
+				<td>单元格4</td>
+				<td>单元格5</td>
+			</tr>
+			<tr>
+				<td>单元格1</td>
+				<td>单元格2</td>
+				<td>单元格3</td>
+				<td>单元格4</td>
+				<td>单元格5</td>
+			</tr>
+			<tr>
+				<td>单元格1</td>
+				<td>单元格2</td>
+				<td>单元格3</td>
+				<td>单元格4</td>
+				<td>单元格5</td>
+			</tr>
+			<tr>
+				<td>单元格1</td>
+				<td>单元格2</td>
+				<td>单元格3</td>
+				<td>单元格4</td>
+				<td>单元格5</td>
+			</tr>
+			<tr>
+				<td>单元格1</td>
+				<td>单元格2</td>
+				<td>单元格3</td>
+				<td>单元格4</td>
+				<td>单元格5</td>
+			</tr>
+			<tr>
+				<td>单元格1</td>
+				<td>单元格2</td>
+				<td>单元格3</td>
+				<td>单元格4</td>
+				<td>单元格5</td>
+			</tr>
+			<tr>
+				<td>单元格1</td>
+				<td>单元格2</td>
+				<td>单元格3</td>
+				<td>单元格4</td>
+				<td>单元格5</td>
+			</tr>
+			<tr>
+				<td>单元格1</td>
+				<td>单元格2</td>
+				<td>单元格3</td>
+				<td>单元格4</td>
+				<td>单元格5</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
 </html>
