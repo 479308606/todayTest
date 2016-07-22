@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html ng-app="wsscat">
+	<head>
+		<meta charset="UTF-8">
+		<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+		<title></title>
+		<link rel="stylesheet" href="dist/css/base.css" />
+		<script type="text/javascript" src="dist/js/angular.js"></script>
+		<script type="text/javascript" src="dist/js/angular-route.js"></script>
+	</head>
+	<body>
+		<div ng-view="">
+			
+		</div>
+	</body>
+	<script type="text/javascript">
+		var app = angular.module('wsscat',['ngRoute']);
+		app.config(function($routeProvider){
+			$routeProvider.when('/index',{
+				controller:'indexCtrl',
+				templateUrl:'view/index.html'
+			}).when('/video',{
+				controller:'videoCtrl',
+				templateUrl:'view/video.html'
+			})
+			.otherwise({
+				redirectTo:'/index'
+			})
+		});
+		app.controller('indexCtrl',['$scope','$http',function($scope,$http){
+			$http.get('xinwen.php').success(function(data){
+				
+				console.log(data.newslist);
+				$scope.news = data.newslist;
+				
+			});
+		}]);
+		app.controller('videoCtrl',['$scope','$http',function($scope,$http){
+			$http.get('video.php').success(function(videoData){
+				console.log(videoData);
+				$scope.videos = videoData.newslist;
+			});
+		}]);
+	</script>
+</html>
